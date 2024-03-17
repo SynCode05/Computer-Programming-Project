@@ -1,12 +1,8 @@
-# # import pygame
-# # pygame.init()
-
-# # Creates the class called CreateGrid
+# Creates the class called CreateGrid
 class CreateGrid():
     """This class creates a grid of dimentions (x,y)."""
-    def __init__(self, x_size: int, y_size: int) -> None:
-        self.x_size = x_size
-        self.y_size = y_size 
+    def __init__(self, x_size: int, y_size: int, *dlc) -> None:
+        self.x_size, self.y_size, self.dlc, self.grid =  x_size, y_size, dlc, []
 
         # Automatically runs the function createBoard()
         self.create_board()
@@ -17,70 +13,41 @@ class CreateGrid():
         return
 
 
-    def switch(self, x, y) -> None:
+    def switch(self, x: int, y: int) -> None:
         """Switches a cell from dead to alive and vise versa."""
-        self.grid[y][x] = 0 if self.grid[y][x] >= 1 else 1
+        self.grid[y][x] = 1
     
-    def off_board(self, x: int, y: int) -> object:
-        """Returns the items that need to be checked."""
-        top = ["TL", "TC", "TR"]
-        bottom = ["BL", "BC", "BR"]
-        left = ["TL", "CL", "BL"]
-        right = ["TR", "CR", "BR"]
-        cells_to_check = {"TL", "TC", "TR", "CL", "CR", "BL", "BC", "BR"}
-        if y == 0: 
-            for i in range(3): cells_to_check.discard(top[i])
-        if y == self.y_size - 1: 
-            for i in range(3): cells_to_check.discard(bottom[i])
-        if x == 0: 
-            for i in range(3): cells_to_check.discard(left[i])
-        if x == self.x_size - 1: 
-            for i in range(3): cells_to_check.discard(right[i])
-        return cells_to_check
+    def count_alive_neighbours(self, x: int, y: int) -> int:
+        """Returns the numer of alive cells."""  
+        count = 0
+        
+        for dy in [-1, 0, 1]: # Range of rows
+            for dx in [-1, 0, 1]: # Range of columns
 
+                if dx == 0 and dy == 0: continue  # Skip current cell
+                nx, ny = x + dx, y + dy # New x and y co-ordiantes
+                if 0 <= nx < self.x_size and 0 <= ny < self.y_size: # Checks to make sure it isn't reading the grid at the index [-1].
+                    count += self.grid[ny][nx] #  Adds value of neighbouring cells.
+        return count
 
-    def check_neighbors(self, x: int, y: int) -> int:
-        cells_to_check = self.off_board(x, y)
-        live_neighbour_count = 0 
-        for cell in cells_to_check:
-            if cell == "TL" and self.grid[y-1][x-1]:
-                live_neighbour_count += 1
-            elif cell == "TC" and self.grid[y-1][x]:
-                live_neighbour_count += 1
-            elif cell == "TR" and self.grid[y-1][x+1]:
-                live_neighbour_count += 1
-            elif cell == "CL" and self.grid[y][x-1]:
-                live_neighbour_count += 1
-            elif cell == "CR" and self.grid[y][x+1]:
-                live_neighbour_count += 1
-            elif cell == "BL" and self.grid[y+1][x-1]:
-                live_neighbour_count += 1
-            elif cell == "BC" and self.grid[y+1][x]:
-                live_neighbour_count += 1
-            elif cell == "BR" and self.grid[y+1][x+1]:
-                live_neighbour_count += 1
-        return live_neighbour_count
-
+    
     def update_grid(self) -> None: 
+        """Updates the grid automatically"""
         new_grid = [[0 for x in range(self.x_size)] for y in range(self.y_size)]
+           
         for y in range(self.y_size):
             for x in range(self.x_size):
-                alive = self.grid[y][x]
-                neighbours = self.check_neighbors(x, y)
 
-    #         # Line to return important information
-    #         print(f"x: {x}, y: {y}, N: {neighbours}")  
+                alive_neighbours = self.count_alive_neighbours(x, y)
                 
-    #         # Line to return important information
-    #         print(f"Alive: {alive}\nLess than 2 neighbours: {neighbours < 2}\nMore than 3 neighbours: {neighbours > 3}\nNeighbour number: {self.grid[y][x]}\n") 
-
-                if alive:
-                    if neighbours < 2 or neighbours > 3: new_grid[y][x] = 1
+                if self.grid[y][x] == 1: 
+                    if alive_neighbours < 2 or alive_neighbours > 3:
+                        new_grid[y][x] = 0  # Cell dies due to underpopulation or overpopulation
+                    else:
+                        new_grid[y][x] = 1  # Cell survives
+                
                 else:
-                    if neighbours == 3: new_grid[y][x] == 0
+                    if alive_neighbours == 3:
+                        new_grid[y][x] = 1  # Cell becomes alive due to reproduction
+        
         self.grid = new_grid
-        return
-            
-    
-    def check_alive(self, x: int, y: int) -> bool:
-       return self.grid[y][x] >= 1
