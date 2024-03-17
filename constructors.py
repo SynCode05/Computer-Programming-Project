@@ -13,13 +13,9 @@ class CreateGrid():
 
     def create_board(self) -> None:
         """To create a co-ordinate system of (x,y) dimentions"""
-        grid_matrix = []
-        for y in range(self.y_size):
-            grid_matrix.append([])
-            for x in range(self.x_size):
-                grid_matrix[y].append(0)
-        self.grid = grid_matrix
+        self.grid = [[0 for x in range(self.x_size)] for y in range(self.y_size)]
         return
+
 
     def switch(self, x, y) -> None:
         """Switches a cell from dead to alive and vise versa."""
