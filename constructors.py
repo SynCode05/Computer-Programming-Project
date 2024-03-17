@@ -1,7 +1,7 @@
-# import pygame
-# pygame.init()
+# # import pygame
+# # pygame.init()
 
-# Creates the class called CreateGrid
+# # Creates the class called CreateGrid
 class CreateGrid():
     """This class creates a grid of dimentions (x,y)."""
     def __init__(self, x_size: int, y_size: int) -> None:
@@ -11,7 +11,7 @@ class CreateGrid():
         # Automatically runs the function createBoard()
         self.create_board()
 
-    def create_board(self):
+    def create_board(self) -> None:
         """To create a co-ordinate system of (x,y) dimentions"""
         grid_matrix = []
         for y in range(self.y_size):
@@ -19,14 +19,13 @@ class CreateGrid():
             for x in range(self.x_size):
                 grid_matrix[y].append(0)
         self.grid = grid_matrix
-        self.counter = grid_matrix
-        return grid_matrix
-    
+        return
+
     def switch(self, x, y) -> None:
         """Switches a cell from dead to alive and vise versa."""
         self.grid[y][x] = 0 if self.grid[y][x] >= 1 else 1
     
-    def off_board(self, x: int, y: int) -> int:
+    def off_board(self, x: int, y: int) -> object:
         """Returns the items that need to be checked."""
         top = ["TL", "TC", "TR"]
         bottom = ["BL", "BC", "BR"]
@@ -44,73 +43,55 @@ class CreateGrid():
         return cells_to_check
 
 
-    def check_neighbours(self, x, y):
-        """Checks the current state of the  neighbours of a given cell."""
-        cells_to_check = self.off_board(x,y)
+    def check_neighbors(self, x: int, y: int) -> int:
+        cells_to_check = self.off_board(x, y)
         live_neighbour_count = 0 
         for cell in cells_to_check:
-            match cell:
-                case "TL":
-                    if self.grid[y-1][x-1]:
-                        live_neighbour_count += 1
-                case "TC":
-                    if self.grid[y-1][x]:
-                        live_neighbour_count += 1
-                case "TR":
-                    if self.grid[y-1][x+1]:
-                        live_neighbour_count += 1
-                case "CL":
-                    if self.grid[y][x-1]: 
-                        live_neighbour_count += 1
-                case "CR":
-                    if self.grid[y][x+1]: 
-                        live_neighbour_count += 1
-                case "BL":
-                    if self.grid[y+1][x-1]: 
-                        live_neighbour_count += 1
-                case "BC":
-                    if self.grid[y+1][x]:
-                        live_neighbour_count += 1
-                case "BR":
-                    if self.grid[y+1][x+1]:
-                        live_neighbour_count += 1
+            if cell == "TL" and self.grid[y-1][x-1]:
+                live_neighbour_count += 1
+            elif cell == "TC" and self.grid[y-1][x]:
+                live_neighbour_count += 1
+            elif cell == "TR" and self.grid[y-1][x+1]:
+                live_neighbour_count += 1
+            elif cell == "CL" and self.grid[y][x-1]:
+                live_neighbour_count += 1
+            elif cell == "CR" and self.grid[y][x+1]:
+                live_neighbour_count += 1
+            elif cell == "BL" and self.grid[y+1][x-1]:
+                live_neighbour_count += 1
+            elif cell == "BC" and self.grid[y+1][x]:
+                live_neighbour_count += 1
+            elif cell == "BR" and self.grid[y+1][x+1]:
+                live_neighbour_count += 1
         return live_neighbour_count
 
-    def next_population(self): 
+    def next_population(self) -> None: 
         """Returns the matrix of the next population."""
+        to_update = []
         for y in range(self.y_size):
             for x in range(self.x_size):
-                # if self.check_neighbours(x , y) < 2 and self.grid[y][x] == 0: self.switch(x,y)
-                # if self.check_neighbours(x , y) > 3 and self.grid[y][x] >= 1: self.switch(x,y)
-                # if self.check_neighbours(x, y) == 3 and self.grid[y][x] == 0: self.switch(x,y)
-                if self.grid[y][x] >= 1: self.counter[y][x] += 1
-        return self.counter
+                alive = self.grid[y][x]
+                neighbours = self.check_neighbors(x, y)
 
+    #         # Line to return important information
+    #         print(f"x: {x}, y: {y}, N: {neighbours}")  
+                
+    #         # Line to return important information
+    #         print(f"Alive: {alive}\nLess than 2 neighbours: {neighbours < 2}\nMore than 3 neighbours: {neighbours > 3}\nNeighbour number: {self.grid[y][x]}\n") 
 
+                if alive:
+                    if neighbours < 2 or neighbours > 3:
+                        to_update.append((x, y))
+                else:
+                    if neighbours == 3:
+                        to_update.append((x, y))
+        self.update_grid(to_update)
+        return self.grid
 
-        
-
-
-# BACKGROUND_COLOR = (0, 0, 0)
-# BUTTON_COLOR = (255, 255, 255)
-# BUTTON_FONT_COLOR = (0, 0, 255)
-# pygame.font.init()
-# font = pygame.font.SysFont("pwchalk", 24)
-# class Button():
-#     def __init__(self, x, y, width, height, text):
-#         self.x = x
-#         self.y = y
-#         self.width = width
-#         self.height = height
-#         self.text = text
-#         self.rect = pygame.Rect(x, y, width, height)
-
-#     def draw(self, screen):
-#         pygame.draw.rect(screen, BUTTON_COLOR, self.rect)
-#         label = font.render(self.text, 1, BUTTON_FONT_COLOR)
-#         screen.blit(label, (self.x + 10, self.y + 10))
-
-#     def check_click(self, pos):
-#         if self.rect.collidepoint(pos):
-#             return True
-#         return False
+    def update_grid(self, to_update: list) -> None: 
+        for x, y in to_update: self.switch(x, y)
+        return
+            
+    
+    def check_alive(self, x: int, y: int) -> bool:
+       return self.grid[y][x] >= 1
