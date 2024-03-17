@@ -12,16 +12,16 @@ def print_grid(grid):
         print(" ".join(["⬜" if cell else "⬛" for cell in row]))
 
 grid = CreateGrid(20, 20) # Creates an instance of GreatGrid (20 x 20)
+
 grid.switch(2, 1) # To switch the state of the cell (Alive/Dead).
 grid.switch(3, 2)
 grid.switch(1, 3)
 grid.switch(2, 3)
 grid.switch(3, 3)
-print("Initial Grid:")
-print_grid(grid)
 
+print("Initial Grid:")
 for i in range(20): #Repeats 20 times
     print("\nNext Generation:") 
     print_grid(grid) # Shows a visual representation of the grid in the cli.
-    grid.next_population() # Simulates a generation passing. 
+    grid.update_grid() # Simulates a generation passing. 
 ```
