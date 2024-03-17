@@ -61,9 +61,8 @@ class CreateGrid():
                 live_neighbour_count += 1
         return live_neighbour_count
 
-    def next_population(self) -> None: 
-        """Returns the matrix of the next population."""
-        to_update = []
+    def update_grid(self) -> None: 
+        new_grid = [[0 for x in range(self.x_size)] for y in range(self.y_size)]
         for y in range(self.y_size):
             for x in range(self.x_size):
                 alive = self.grid[y][x]
@@ -76,16 +75,10 @@ class CreateGrid():
     #         print(f"Alive: {alive}\nLess than 2 neighbours: {neighbours < 2}\nMore than 3 neighbours: {neighbours > 3}\nNeighbour number: {self.grid[y][x]}\n") 
 
                 if alive:
-                    if neighbours < 2 or neighbours > 3:
-                        to_update.append((x, y))
+                    if neighbours < 2 or neighbours > 3: new_grid[y][x] = 1
                 else:
-                    if neighbours == 3:
-                        to_update.append((x, y))
-        self.update_grid(to_update)
-        return self.grid
-
-    def update_grid(self, to_update: list) -> None: 
-        for x, y in to_update: self.switch(x, y)
+                    if neighbours == 3: new_grid[y][x] == 0
+        self.grid = new_grid
         return
             
     
