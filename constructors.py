@@ -50,4 +50,10 @@ class CreateGrid():
                     if alive_neighbours == 3:
                         new_grid[y][x] = 1  # Cell becomes alive due to reproduction
         
+    for x, y in self.grid:
+        if new_grid[y][x] == 1 and self.grid[y][x] == 1:
+            new_grid[y][x] += self.grid[y][x]
+
+            
+
         self.grid = new_grid
