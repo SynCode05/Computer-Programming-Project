@@ -26,8 +26,8 @@ class CreateGrid():
 
                 if dx == 0 and dy == 0: continue  # Skip current cell
                 nx, ny = x + dx, y + dy # New x and y co-ordiantes
-                if 0 <= nx < self.x_size and 0 <= ny < self.y_size: # Checks to make sure it isn't reading the grid at the index [-1].
-                    count += self.grid[ny][nx] #  Adds value of neighbouring cells.
+                if (0 <= nx < self.x_size and 0 <= ny < self.y_size) and self.grid[ny][nx] >= 1: # Checks to make sure it isn't reading the grid at the index [-1] and the cell is alive.
+                    count += 1 #  Adds one to count
         return count
 
     
