@@ -15,7 +15,7 @@ class CreateGrid():
 
     def switch(self, x: int, y: int) -> None:
         """Switches a cell from dead to alive and vise versa."""
-        self.grid[y][x] = 1
+        self.grid[y][x] = 0 if self.gird[y][x] >= 1 else 1
     
     def count_alive_neighbours(self, x: int, y: int) -> int:
         """Returns the numer of alive cells."""  
