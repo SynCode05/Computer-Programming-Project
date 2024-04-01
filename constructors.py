@@ -1,3 +1,5 @@
+from functions import xor
+
 # Creates the class called CreateGrid
 class CreateGrid():
     """This class creates a grid of dimentions (x,y)."""
@@ -15,7 +17,7 @@ class CreateGrid():
 
     def switch(self, x: int, y: int) -> None:
         """Switches a cell from dead to alive and vise versa."""
-        self.grid[y][x] = 0 if self.grid[y][x] >= 1 else 1
+        self.grid[y][x] = 1
     
     def count_alive_neighbours(self, x: int, y: int) -> int:
         """Returns the numer of alive cells."""  
@@ -26,31 +28,12 @@ class CreateGrid():
 
                 if dx == 0 and dy == 0: continue  # Skip current cell
                 nx, ny = x + dx, y + dy # New x and y co-ordiantes
-                if (0 <= nx < self.x_size and 0 <= ny < self.y_size) and self.grid[ny][nx] >= 1: # Checks to make sure it isn't reading the grid at the index [-1] and the cell is alive.
-                    count += 1 #  Adds one to count
+                if 0 <= nx < self.x_size and 0 <= ny < self.y_size: # Checks to make sure it isn't reading the grid at the index [-1].
+                    count += self.grid[ny][nx] #  Adds value of neighbouring cells.
         return count
 
     
     def update_grid(self) -> None: 
-        """Updates the grid automatically"""
-        new_grid = [[0 for x in range(self.x_size)] for y in range(self.y_size)]
-        
-        for y in range(self.y_size):
-            for x in range(self.x_size):
-
-                alive_neighbours = self.count_alive_neighbours(x, y)
-                
-                if self.grid[y][x] == 1: 
-                    if alive_neighbours < 2 or alive_neighbours > 3:
-                        new_grid[y][x] = 0  # Cell dies due to underpopulation or overpopulation
-                    else:
-                        new_grid[y][x] = 1  # Cell survives
-                
-                else:
-                    if alive_neighbours == 3:
-                        new_grid[y][x] = 1  # Cell becomes alive due to reproduction
-
-        self.grid = new_grid
         """Updates the grid automatically"""
         new_grid = [[0 for x in range(self.x_size)] for y in range(self.y_size)]
            
@@ -69,11 +52,4 @@ class CreateGrid():
                     if alive_neighbours == 3:
                         new_grid[y][x] = 1  # Cell becomes alive due to reproduction
         
-        for y in range(self.y_size):
-            for x in range(self.x_size):
-                if new_grid[y][x] == 1 and self.grid[y][x] == 1:
-                    new_grid[y][x] += self.grid[y][x]
-
-            
-
         self.grid = new_grid
