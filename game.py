@@ -29,8 +29,11 @@ def count_alive_neighbours(grid, data, x: int, y: int) -> int:
     return count
 
     
-def update_grid(grid, data) -> None: 
+def update_grid(grid, data, delay) -> None: 
     """Updates the grid automatically"""
+
+    # __import__("time").sleep(delay)
+
     new_grid = [[0 for x in range(data["x_size"])] for y in range(data["y_size"])]
            
     for y in range(data["y_size"]):
@@ -64,14 +67,14 @@ def print_grid(grid):
     for row in grid:
         print(" ".join(["⬜" if cell else "⬛" for cell in row]))
 
-grid = create_board(data)
-switch(grid, 2, 1) # To switch the state of the cell (Alive/Dead).
-switch(grid, 3, 2)
-switch(grid, 1, 3)
-switch(grid, 2, 3)
-switch(grid, 3, 3)
-for i in range(30): 
-    print("\nNext Generation:") 
-    grid = update_grid(grid, data)
-    print_grid(grid)
+# grid = create_board(data)
+# switch(grid, 2, 1) # To switch the state of the cell (Alive/Dead).
+# switch(grid, 3, 2)
+# switch(grid, 1, 3)
+# switch(grid, 2, 3)
+# switch(grid, 3, 3)
+# for i in range(70): 
+#     print("\nNext Generation:") 
+#     grid = update_grid(grid, data, 1)
+#     print_grid(grid)
     
