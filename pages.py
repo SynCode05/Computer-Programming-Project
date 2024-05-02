@@ -1,17 +1,27 @@
 import pygame
+import pygame_widgets
+from pygame_widgets.slider import Slider
+from pygame_widgets.textbox import TextBox
 from assets import colours
 from functions import draw_button, draw_grid
-from game import create_board, update_grid, switch, print_grid
+from game import create_board, update_grid, switch
+from random import randrange
 
 pygame.mixer.init()
-pygame.mixer.music.load("assets/soundtracks/minecraft.mp3")
-# pygame.mixer.music.play()
+
+music = ["assets/soundtracks/minecraft.mp3", "assets/soundtracks/nyan_cat.mp3" ]
+
+pygame.mixer.music.load(music[randrange(len(music))])
+pygame.mixer.music.play()
+
+logo = pygame.image.load("assets/ECAM.png")
+pygame.display.set_icon(logo)
 
 def main_menu():
     screen = pygame.display.set_mode((1048, 720), pygame.NOFRAME)
     BG = pygame.image.load("assets/Background.png")
 
-    # pygame.display.set_caption('Connaway - Game of Life | Main Menu')
+    pygame.display.set_caption('Connaway - Game of Life | Main Menu')
 
     play_text_box, play_button = draw_button('PLAY', screen.get_width()/2, 200, 250, 100)
     mods_text_box, mods_button = draw_button('MODS', screen.get_width()/2, 400, 250, 100)
@@ -61,6 +71,9 @@ def main_menu():
 
 def game_page():
 
+    pygame.display.set_caption('Connaway - Game of Life | Game')
+
+
     data = { "x_size": 40, "y_size": 40 }
     grid = create_board(data)
     switch(grid, 2, 1) # To switch the state of the cell (Alive/Dead).
@@ -77,15 +90,23 @@ def game_page():
     reset_text_box, reset_button = draw_button('RESET', screen.get_width()/8*7, screen.get_height()/2, 300, 100)
     quit_text_box, quit_button = draw_button('BACK', screen.get_width()/8*7, screen.get_height()/2 + 200, 300, 100)
 
+    slider = Slider(screen, 100, 0, 400, 20, min=1, max=100, step=1, colour = colours.GREEN, handleColour = colours.HOVERED_GREEN)
+    output = TextBox(screen, screen.get_width()/10*8 + 35, 0, 150, 150, font=pygame.font.Font('assets/PressStart2P-Regular.ttf', 30))
+
+    time_now, finish_time = pygame.time.get_ticks(), pygame.time.get_ticks()
 
 
     while True:
+        
+        screen.fill(colours.BLACK)
+        
+        time_now = pygame.time.get_ticks()
+
         grid_background, cells, cell_coulour = draw_grid(50, 50, screen.get_width() - (250 * 2), screen.get_height() - (50 * 2), grid)
         pygame.draw.rect(screen, colours.AQUA, grid_background, border_radius = 5)
 
 
         for i, cell in enumerate(cells):
-
             pygame.draw.rect(screen, cell_coulour[i], cell) 
 
 
@@ -93,36 +114,36 @@ def game_page():
 
         x, y = pygame.mouse.get_pos()
 
-
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
-                pygame.quit()
+                    pygame.quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_stop_button.collidepoint(event.pos):
-                    # Set a flag to indicate that the button is being pressed
-                    button_pressed = True
+                    if start_stop_button.collidepoint(event.pos):
+                        # Set a flag to indicate that the button is being pressed
+                        button_pressed = True
 
             if event.type == pygame.MOUSEBUTTONUP:
 
-                # Check if the mouse position is inside the rectangle
-                for i, cell in enumerate(cells): 
-                    if cell.collidepoint((x, y)):
-                        switch(grid, (i % data["y_size"]), (i // data["y_size"]))
+                    # Check if the mouse position is inside the rectangle
+                    for i, cell in enumerate(cells): 
+                        if cell.collidepoint((x, y)) and state == 'START':
+                            switch(grid, (i % data["x_size"]), (i // data["x_size"]))
 
-                if start_stop_button.collidepoint(event.pos) and button_pressed:
-                    # Toggle the state and update the colors
-                    if state != 'START':
-                        state = 'START'
-                        state_colour = colours.GREEN
-                        state_hovered_colour = colours.HOVERED_GREEN
-                    else:
-                        state = 'STOP'
-                        state_colour = colours.RED
-                        state_hovered_colour = colours.HOVERED_RED
-                    # Reset the flag
-                    button_pressed = False
-                
+                    if start_stop_button.collidepoint(event.pos) and button_pressed:
+                        # Toggle the state and update the colors
+                        if state != 'START':
+                            state = 'START'
+                            state_colour = colours.GREEN
+                            state_hovered_colour = colours.HOVERED_GREEN
+                        else:
+                            state = 'STOP'
+                            state_colour = colours.RED
+                            state_hovered_colour = colours.HOVERED_RED
+                        # Reset the flag
+                        button_pressed = False
+                    
 
             if event.type == pygame.MOUSEBUTTONDOWN and reset_button.collidepoint(event.pos): game_page(); return
             if event.type == pygame.MOUSEBUTTONDOWN and quit_button.collidepoint(event.pos): main_menu(); return
@@ -154,21 +175,27 @@ def game_page():
         text_y = quit_button.y + (quit_button.height - quit_text_box.get_height()) / 2
         screen.blit(quit_text_box, (text_x, text_y))
 
-        if state is not "START":
-            # print_grid(grid)
-            update_grid(grid, data, 0.1)
-            # grid = __import__("_thread").start_new_thread(update_grid, (grid, data, 0.1))
 
+        if state != "START" and finish_time < time_now:
+            # print_grid(grid)
+            update_grid(grid, data)
+            finish_time = time_now + 1000 - slider.getValue()/100 * 1000
         
+        pygame_widgets.update(pygame.event.get())
+        output.setText(f"{slider.getValue()}%")
         pygame.display.flip()
         
 
 def mods_page():
+
+    pygame.display.set_caption('Connaway - Game of Life | Mods Menu')
+
+
     return
 # Initialize pygame
 pygame.init()
 
 
-
 main_menu()
+
 

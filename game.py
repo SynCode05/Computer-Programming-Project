@@ -1,20 +1,17 @@
-
-
-def create_board(data) -> None:
+def create_board(data: set) -> list[list[int]]:
     """To create a co-ordinate system of (x,y) dimentions"""
     grid = [[0 for x in range(data["x_size"])] for y in range(data["y_size"])]
     return grid
 
 
-def switch(grid, x: int, y: int) -> None:
+def switch(grid: list[list[int]], x: int, y: int) -> None:
     """Switches a cell from dead to alive and vise versa."""
     if grid[y][x] >= 1:
         grid[y][x] = 0
     else:
         grid[y][x] = 1
 
-
-def count_alive_neighbours(grid, data, x: int, y: int) -> int:
+def count_alive_neighbours(grid: list[list[int]], data: set, x: int, y: int) -> int:
     """Returns the numer of alive cells."""  
     count = 0
         
@@ -28,8 +25,7 @@ def count_alive_neighbours(grid, data, x: int, y: int) -> int:
                     count +=1 #  Adds value of neighbouring cells.
     return count
 
-    
-def update_grid(grid, data, delay) -> None: 
+def update_grid(grid: list[list[int]], data: set) -> list[list[int]]: 
     """Updates the grid automatically"""
 
     # __import__("time").sleep(delay)
@@ -53,16 +49,15 @@ def update_grid(grid, data, delay) -> None:
     grid = combine_grids(grid, new_grid, data)  
     return grid
 
-def combine_grids(grid, new_grid, data):
+def combine_grids(grid: list[list[int]], new_grid: list[list[int]], data: set):
     for y in range(data["y_size"]):
         for x in range(data["x_size"]):
             if new_grid[y][x] == 1: grid[y][x] += 1
             else: grid[y][x] = 0
     return grid
       
-data = { "x_size": 20, "y_size": 20 }
 
-def print_grid(grid): 
+def print_grid(grid: list[list[int]]) -> None: 
     """Information on the grid."""
     for row in grid:
         print(" ".join(["⬜" if cell else "⬛" for cell in row]))

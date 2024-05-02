@@ -1,11 +1,8 @@
-from copyreg import constructor
 import pygame
 from assets import colours
 
-def xor(condition_1, condition_2):
-    return (condition_1 and not condition_2) or (condition_2 and not condition_1)
-
-def draw_button(text, x, y, width, height):
+def draw_button(text: str, x: int, y: int, width: int, height: int) -> object:
+    "Create a Button and Text Surafce"
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
     text_box = font.render(text, True, (255, 255, 255))
     button = pygame.Rect(x-width/2, y-height/2, width, height)
@@ -14,7 +11,8 @@ def draw_button(text, x, y, width, height):
     button.height = height
     return text_box, button
 
-def draw_grid(x, y, width, height, grid):
+def draw_grid(x: int, y: int, width: int, height: int, grid: list[list[int]]):
+    "Render the grid on the UI"
     cells = []; cell_colours = []; new_cells = []; new_cell_colours = []
 
     rows = len(grid)
@@ -39,21 +37,3 @@ def draw_grid(x, y, width, height, grid):
 
 
     return background, cells, cell_colours
-
-# _songs = ["assets/soundtracks/minecraft/mp3"]
-
-
-
-# _currently_playing_song = None
-# print (_songs)
-
-
-# def music():
-
-#     global _currently_playing_song, _songs
-#     next_song = random.choice(_songs)
-#     while next_song == _currently_playing_song:
-#         next_song = random.choice(_songs)
-#     _currently_playing_song = next_song
-#     pygame.mixer.music.load(next_song)
-#     pygame.mixer.music.play()
