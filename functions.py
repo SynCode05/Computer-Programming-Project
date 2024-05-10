@@ -3,7 +3,7 @@ from assets import colours
 
 def draw_button(text: str, x: int, y: int, width: int, height: int) -> object:
     "Create a Button and Text Surafce"
-    font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
+    font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 45)
     text_box = font.render(text, True, (255, 255, 255))
     button = pygame.Rect(x-width/2, y-height/2, width, height)
 
