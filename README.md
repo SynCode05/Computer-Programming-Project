@@ -21,8 +21,7 @@
 >> * :white_check_mark: Customizable grid presets.
 >> * :white_check_mark: Game speed Management.
 >> * :x: Grid size customization (irregular sizes)
-> ******
-
+>
 
 
 
