@@ -1,27 +1,27 @@
-# Computer-Programming-Project
-A project emulating the "game of life"
+# Computer Programming Project
 
-Example:
+> 📖 **Libraries Used:**
+>> [Pygame](www.pygame.org/) | [Pygame Widgets](https://pypi.org/project/pygame-widgets/)
+> 
+> **Project Management:**
+>> Figma - for an illustration of the UI.
+>> Visual Studio Code (VSC) - for the coding.
+>> LucidChart - for designing the code flowchart. 
+>> GitHub - for code collaboration and cloud saving and problem management.
+>> Canva - for the presentation.
+>
+> **Teams:**
+>> Graphical - Anna, Camille
+>> Presentation - Anna, Antoine, Camille, Jeremy, Lohan
+>> Code - Anna, Jeremy
+>
+> **Features:**
+>> * Grid presets - randomization, saved presets.
+>> * Music Manager.
+>> * Customizable grid presets.
+>> * Game speed Management.
+> ******
 
-```python
-from constructors import CreateGrid
 
-def print_grid(grid): 
-    """Information on the grid."""
-    for row in grid.grid:
-        print(" ".join(["⬜" if cell else "⬛" for cell in row]))
 
-grid = CreateGrid(20, 20) # Creates an instance of GreatGrid (20 x 20)
 
-grid.switch(2, 1) # To switch the state of the cell (Alive/Dead).
-grid.switch(3, 2)
-grid.switch(1, 3)
-grid.switch(2, 3)
-grid.switch(3, 3)
-
-print("Initial Grid:")
-for i in range(20): #Repeats 20 times
-    print("\nNext Generation:") 
-    print_grid(grid) # Shows a visual representation of the grid in the cli.
-    grid.update_grid() # Simulates a generation passing. 
-```

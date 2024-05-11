@@ -34,6 +34,7 @@ def main_menu():
     quit_text_box, quit_button = draw_button('QUIT', screen.get_width()/2, 600, 250, 100)
 
     while True:
+
         screen.blit(BG, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
