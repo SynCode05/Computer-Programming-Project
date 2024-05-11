@@ -16,11 +16,11 @@
 >> Code - Anna, Jeremy
 >
 > **Features:**
->> [x] * Grid presets - randomization, saved presets. 
->> [x] * Music Manager.
->> [x] * Customizable grid presets.
->> [x] * Game speed Management.
->> [] * Grid size customization (irregular sizes)
+>> * :white_check_mark: Grid presets - randomization, saved presets. 
+>> * :white_check_mark: Music Manager.
+>> * :white_check_mark: Customizable grid presets.
+>> * :white_check_mark: Game speed Management.
+>> * :x: Grid size customization (irregular sizes)
 > ******
 
 
