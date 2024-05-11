@@ -158,10 +158,10 @@ def game_page() -> None:
 
                     if preset_button.collidepoint(event.pos) and preset_button_pressed and state == "START":
                         # Toggle the state and update the colors
+                        preset_counter += 1
                         item_index = preset_counter%len(presets.preset_state)
                         preset_name, preset_hovered_colour, preset_colour = presets.preset_state[item_index]
                         preset = presets.configs[(preset_name).lower()]
-                        preset_counter += 1
                         # Reset the flag
                         preset_button_pressed = False      
                         
