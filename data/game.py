@@ -50,6 +50,7 @@ def update_grid(grid: list[list[int]], data: set) -> list[list[int]]:
     return grid
 
 def combine_grids(grid: list[list[int]], new_grid: list[list[int]], data: set):
+    """A function to combine the grids into a new 2D list"""
     for y in range(data["y_size"]):
         for x in range(data["x_size"]):
             if new_grid[y][x] == 1: grid[y][x] += 1
