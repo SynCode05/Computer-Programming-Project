@@ -216,7 +216,6 @@ def game_page() -> None:
         pygame_widgets.update(pygame.event.get())
         pygame.display.flip()
         
-
 def mods_page():
 
     screen = pygame.display.set_mode((1048, 720), pygame.NOFRAME)
